@@ -1,0 +1,31 @@
+{
+  "name": "prueba_adomi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "lint": "eslint"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "nodemon": "^2.0.20",
+    "prettier": "^2.8.3"
+  },
+  "dependencies": {
+    "@hapi/boom": "^10.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "faker": "^5.5.3",
+    "joi": "^17.7.0"
+  },
+  "engines": {
+    "node": "16.17.0"
+  }
+}

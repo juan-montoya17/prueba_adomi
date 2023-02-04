@@ -1,5 +1,8 @@
 const faker = require("faker");
 const boom = require("@hapi/boom");
+
+const { models } = require('./../libs/sequalize.js');
+
 class TaskService {
 
   constructor(){
@@ -29,7 +32,7 @@ class TaskService {
   }
 
   async find() {
-    return this.tasks;
+    return await models.Task.findAll();
   }
 
   async findOne(id) {

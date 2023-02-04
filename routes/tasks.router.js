@@ -7,8 +7,8 @@ const router = express.Router();
 const service = new taskService();
 
 router.get('/', async (req, res) =>{
-  const products = await service.find();
-  res.json(products);
+  const tasks = await service.find();
+  res.json(tasks);
 });
 
 router.get('/:id',

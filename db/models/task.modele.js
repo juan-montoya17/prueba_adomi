@@ -1,12 +1,15 @@
 const { Model, DataTypes} = require('sequelize');
 
+const { USER_TABLE } = require('./user.modele.js');
+
 const TASK_TABLE = 'tasks';
 
 const TaskSchema = {
   id: {
     allowNull: false,
     primaryKey: true,
-    type: DataTypes.UUID
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4
   },
   title: {
     allowNull: false,
@@ -22,12 +25,24 @@ const TaskSchema = {
     allowNull: false,
     type: DataTypes.DATE,
     unique: false
+  },
+  userId: {
+    field: "user",
+    allowNull: false,
+    type: DataTypes.UUID,
+    references: {
+      model: USER_TABLE,
+      key: 'id'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'Set Null'
   }
 }
 
 class Task extends Model {
-  static  associate(){
-    //associations can be defined here
+  static  associate(models){
+    //association tasks to users many to one
+    this.belongsTo(models.User, {as: 'user'});
   }
 
   static config(sequelize){

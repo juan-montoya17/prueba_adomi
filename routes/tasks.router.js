@@ -27,10 +27,11 @@ router.get('/:id',
 router.post('/',
   validatorHandler(createTaskSchema, 'body'),
   async (req, res) => {
-  const body = req.body;
-  const newTask = service.create(body);
-  res.status(201).json(newTask);
-})
+    const body = req.body;
+    const newTask = await service.create(body);
+    console.log(newTask);
+    res.status(201).json(newTask);
+});
 
 router.patch('/:id',
   validatorHandler(getTaskSchema, 'params'),

@@ -6,7 +6,8 @@ const UserSchema = {
   id: {
     allowNull: false,
     primaryKey: true,
-    type: DataTypes.UUID
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4
   },
   email: {
     allowNull: false,
@@ -20,13 +21,22 @@ const UserSchema = {
   name: {
     allowNull: false,
     type: DataTypes.STRING
+  },
+  cell: {
+    allowNull: true,
+    type: DataTypes.STRING,
+    unique: false
   }
 }
 
 class User extends Model {
-  static  associate(){
+  static  associate(models){
     //associations can be defined here
-  }
+    this.hasMany(models.Task, {
+      as: 'tasks',
+      foreignKey: 'userId'
+    });
+    }
 
   static config(sequelize){
     return {

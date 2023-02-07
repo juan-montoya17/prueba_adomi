@@ -1,28 +1,23 @@
 const boom = require('@hapi/boom');
-const faker = require('faker');
 
-const { models } = require('./../libs/sequalize.js');
+const { models } = require('../libs/sequelize.js');
 
 class UserService {
   constructor() {
-    this.users = [];
   }
 
   async create(data) {
-    const body = {
-      id: faker.datatype.uuid(),
-      ...data
-    }
-    const newUser = await models.User.create(body);
+    const newUser = await models.User.create(data);
     return newUser;
   }
 
   async find() {
-    return await models.User.findAll();
+    const users = await models.User.findAll();
+    return users;
   }
 
   async findOne(id) {
-    const user = await models.User.findByPk(id);
+    const user = await models.User.findByPk(id, { include: ['tasks'] });
     if (!user) {
       throw boom.notFound('User not found');
     }

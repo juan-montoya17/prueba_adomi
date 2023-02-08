@@ -2,16 +2,20 @@ const express = require('express');
 const taskService = require('../services/task.service');
 const validatorHandler = require('./../middlewares/validator.handler');
 const { createTaskSchema, updateTaskSchema, getTaskSchema } = require('./../schemas/task.schema');
+const passport = require("passport");
 
 const router = express.Router();
 const service = new taskService();
 
-router.get('/', async (req, res) =>{
+router.get('/',
+  passport.authenticate('jwt', {session: false}),
+  async (req, res) =>{
   const tasks = await service.find();
   res.json(tasks);
 });
 
 router.get('/:id',
+  passport.authenticate('jwt', {session: false}),
   validatorHandler(getTaskSchema, 'params'),
   async (req,res ,next) =>{
   try {
@@ -25,15 +29,21 @@ router.get('/:id',
 );
 
 router.post('/',
+  passport.authenticate('jwt', {session: false}),
   validatorHandler(createTaskSchema, 'body'),
-  async (req, res) => {
-    const body = req.body;
-    const newTask = await service.create(body);
-    console.log(newTask);
-    res.status(201).json(newTask);
+  async (req, res, next) => {
+    try {
+      const body = req.body;
+      const newTask = await service.create(body);
+      console.log(newTask);
+      res.status(201).json(newTask);
+    } catch (error) {
+      next(error);
+    }
 });
 
 router.patch('/:id',
+  passport.authenticate('jwt', {session: false}),
   validatorHandler(getTaskSchema, 'params'),
   validatorHandler(updateTaskSchema, 'body'),
   async (req, res, next) => {
@@ -47,7 +57,9 @@ router.patch('/:id',
   }
 })
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id',
+  passport.authenticate('jwt', {session: false}),
+  async (req, res, next) => {
   try {
     const {id} = req.params;
     const rta = await service.delete(id);

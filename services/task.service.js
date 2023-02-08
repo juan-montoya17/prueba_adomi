@@ -19,6 +19,34 @@ class TaskService {
     return tasks;
   }
 
+  async findByUser(userId) {
+    const tasks = await models.Task.findAll({
+      where: {
+        '$user.id$': userId
+      },
+      include: ['user']
+    });
+    return tasks;
+  }
+
+  async finOneByUser(userId, taskId) {
+    const tasks = await models.Task.findAll({
+      where: {
+        '$user.id$': userId,
+      },
+      include: ['user']
+    });
+    if(!tasks) {
+      throw boom.notFound('task not found');
+    }
+    const task = tasks.find(task => task.id === taskId);
+    if(!task) {
+      throw boom.notFound('task not found in user');
+    }
+    return task;
+
+  }
+
   async findOne(id) {
     const task = await models.Task.findByPk(id);
     if (!task) {
